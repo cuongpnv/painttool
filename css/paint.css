@@ -1,0 +1,71 @@
+body {
+    margin: 0; padding: 0;
+    background-color: #424F5A;
+    font-size: 1.3rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    line-height: 1.4;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+/* ========== left sidebar ================================================== */
+
+.sidebar_left{
+    margin-top: 50px;
+    grid-area: sidebar_left;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: #323a3c;
+    padding: 0 5px 5px 0;
+    margin-right: 5px;
+    overflow: hidden;
+    align-self: start;
+    width: 40px;
+    max-height: 100%;
+}
+.sidebar_left .item{
+    position: relative;
+    display:block;
+    background-color: #464d4f;
+    height: 25px;
+    width: 30px;
+    margin: 5px 0 0 5px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.sidebar_left .item:after{
+    position: absolute;
+    content: '';
+    left:0;
+    top:0;
+    bottom:0;
+    right:0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.sidebar_left .item:hover{
+    background-color: #575f62;
+}
+.sidebar_left .item.active{
+    background-color: #adecab;
+    color: #215b2a;
+}
+
+/*
+IMPORTANT: any new icon should also must be added on /service-worker.js + its version should be updated !!!
+ */
+.sidebar_left .select:after{ background-image: url('../image/selection.svg'); }
+.sidebar_left .move:after{ background-image: url('../image/tap.svg'); }
+.sidebar_left .pencil:after{ background-image: url('../image/pen.svg'); }
+.sidebar_left .eraser:after{ background-image: url('../image/eraser.svg'); }
+.sidebar_left .shape:after{ background-image: url('../image/shapes.svg'); }
+.sidebar_left .copy:after{ background-image: url('../image/copy.svg'); }
+.sidebar_left .paste:after{ background-image: url('../image/paste.svg'); }
+.sidebar_left .line:after{ background-image: url('../image/diagonal-line.svg'); }
+.sidebar_left .btnClrArl:after{ background-image: url('../image/stamp.svg'); }
+.sidebar_left .stamp:after{ background-image: url('../image/stamp.svg'); }
+.sidebar_left .text:after{ background-image: url('../image/text.svg'); }
+.sidebar_left .history:after{ background-image: url('../image/history.svg'); }
