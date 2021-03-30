@@ -1,6 +1,23 @@
+.wrapper{
+    display: grid;
+    margin: 0;
+    position: fixed; /* dont change it, vh does not work on mobiles with bottom footer */
+    top: 30px;
+    right: 0;
+    left: 0;
+    bottom: 5px;
+    height: auto;
+    overflow: hidden;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+            "submenu submenu submenu"
+            "sidebar_left main sidebar_right";
+}
+
 body {
     margin: 0; padding: 0;
-    background-color: #424F5A;
+    background-color: #637686;
     font-size: 1.3rem;
     font-family: Arial, Helvetica, sans-serif;
     color: #000000;
@@ -54,9 +71,6 @@ body {
     color: #215b2a;
 }
 
-/*
-IMPORTANT: any new icon should also must be added on /service-worker.js + its version should be updated !!!
- */
 .sidebar_left .select:after{ background-image: url('../image/selection.svg'); }
 .sidebar_left .move:after{ background-image: url('../image/tap.svg'); }
 .sidebar_left .pencil:after{ background-image: url('../image/pen.svg'); }
@@ -69,3 +83,101 @@ IMPORTANT: any new icon should also must be added on /service-worker.js + its ve
 .sidebar_left .stamp:after{ background-image: url('../image/stamp.svg'); }
 .sidebar_left .text:after{ background-image: url('../image/text.svg'); }
 .sidebar_left .history:after{ background-image: url('../image/history.svg'); }
+
+.middle_area {
+    position: relative;
+    grid-area: main;
+}
+
+.main_wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.canvas_wrapper {
+    position: relative;
+}
+
+.canvas_wrapper canvas {
+    border: 1px solid #727677;
+}
+
+.canvas_wrapper canvas {
+    position: absolute;
+    box-sizing: content-box;
+    font-kerning: normal !important;
+}
+
+#mouse{
+    position:absolute;
+    pointer-events:none;
+    width:10px;
+    height:10px;
+    z-index:10;
+}
+#mouse.rect{
+    border:1px solid rgba(0,0,0,0.5);
+}
+#mouse.circle{
+    border:1px solid rgba(0,0,0,0.5);
+    border-radius:50%;
+}
+
+.transparent-grid{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAQElEQVQ4T2N89+7dfwYigKCgIBGqGBgYRw3EGU6jYYgzaIZAsvn//z9ROeX9+/fE5ZRRA3GG02gY4s4pgz7ZAAAnSWvHPkHXaAAAAABJRU5ErkJggg==') repeat top left;
+    z-index: -1;
+}
+
+.transparent-grid.white{
+    background:white;
+}
+.transparent-grid.green{
+    background: #5be471;
+}
+.transparent-grid.grey{
+    background: #dfdfdf;
+}
+
+.error{
+    padding:20px;
+    margin:10px;
+    border:1px solid #ff0000;
+    background-color:#ffffff;
+    width:500px;
+    font-weight:bold;
+}
+
+@media screen and (max-width:700px){
+    body{
+        padding-top:50px;
+    }
+    .wrapper{
+        top: 50px;
+    }
+}
+@media screen and (max-width:550px){
+    .canvas_wrapper{
+        margin-left: 0px;
+    }
+}
+@media screen and (max-height: 740px){
+    .sidebar_left{
+        width: 75px;
+    }
+}
+@media screen and (max-height:450px){
+    .sidebar_left{
+        width: 88px;
+    }
+}

@@ -11,9 +11,9 @@
         <nav class="main_menu" id="main_menu"></nav>
         <div class="submenu"></div>
         <div class="sidebar_left" id="tools_container">
-            <span id="select" title="Select object tool" class="item trn select active"></span>
+            <span id="select" title="Select object tool" class="item trn select"></span>
             <span id="move" title="Move" class="item trn move"></span>
-            <span id="pencil" title="Pencil" class="item trn pencil"></span>
+            <span id="pen" title="Pencil" class="item trn pencil"></span>
             <span id="eraser" title="Eraser" class="item trn eraser"></span>
             <span id="shape" title="Shape" class="item trn shape"></span>
             <span id="copy" title="Copy" class="item trn copy"></span>
@@ -24,7 +24,16 @@
             <span id="text" title="Text" class="item trn text"></span>
             <span id="history" title="tools12" class="item trn history"></span>
         </div>
-        <div class="painting_area" id="painting_area"></div>
+        <div class="middle_area" id="middle_area">
+            <div class="main_wrapper" id="main_wrapper" style="cursor: default;">
+                <div class="canvas_wrapper" id="canvas_wrapper" style="width: 800px; height: 600px;">
+                    <div id="mouse"></div>
+                    <div class="transparent-grid white" id="canvas_minipaint_background"></div>
+                    <canvas id="canvas_minipaint"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
+<script src="js/main.js"></script>
 </body>
 </html>
