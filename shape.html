@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title>
+        Draw with the mouse in a HTML5 canvas
+    </title>
+
+    <style>
+        * {
+            overflow: hidden;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        h1 {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="button" value="vuong" onClick="setTypeClick('vuong')"/>
+    <input type="button" value="oval" onClick="setTypeClick('oval')"/>
+    <input type="button" value="cirlce" onClick="setTypeClick('cirlce')"/>
+
+    <br>
+    <canvas id="canvas" width="600" height="400" style="border: 1px solid;"></canvas>
+    <script >
+        var typeDraw = 'vuong'
+        function setTypeClick(type) {
+            typeDraw = type
+        }
+
+   var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var cw = canvas.width;
+    var ch = canvas.height;
+
+    // ctx.font = "30px Arial";
+    // ctx.fillText("Hello World", 10, 50);
+
+
+
+    function reOffset() {
+        var BB = canvas.getBoundingClientRect();
+        offsetX = BB.left;
+        offsetY = BB.top;
+    }
+    var offsetX, offsetY;
+    reOffset();
+    window.onscroll = function (e) { reOffset(); }
+    window.onresize = function (e) { reOffset(); }
+
+    var isDown = false;
+    var startX, startY;
+
+    var rects = [];
+    var newRect;
+
+    $("#canvas").mousedown(function (e) { handleMouseDown(e); });
+    $("#canvas").mousemove(function (e) { handleMouseMove(e); });
+    $("#canvas").mouseup(function (e) { handleMouseUp(e); });
+    $("#canvas").mouseout(function (e) { handleMouseOut(e); });
+
+
+    function handleMouseDown(e) {
+        // tell the browser we're handling this event
+        e.preventDefault();
+        e.stopPropagation();
+
+        startX = parseInt(e.clientX - offsetX);
+        startY = parseInt(e.clientY - offsetY);
+
+        // Put your mousedown stuff here
+        isDown = true;
+    }
+
+    function handleMouseUp(e) {
+        // tell the browser we're handling this event
+        e.preventDefault();
+        e.stopPropagation();
+
+        mouseX = parseInt(e.clientX - offsetX);
+        mouseY = parseInt(e.clientY - offsetY);
+
+        // Put your mouseup stuff here
+        isDown = false;
+
+        // if (!willOverlap(newRect)) {
+        //     rects.push(newRect);
+        // }
+        rects.push(newRect);
+        drawAll();
+    }
+
+    function drawAll() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // ctx.fillStyle = 'green';
+        // ctx.fill();
+        ctx.lineWidth = 1;
+        // ctx.strokeStyle = 'green';
+
+        for (var i = 0; i < rects.length; i++) {
+            var r = rects[i];
+            if(r.type == 'vuong'){
+                // ctx.fillRect(r.left, r.top, r.right - r.left, r.bottom - r.top);
+                // ctx.strokeStyle = "#0000ff";
+                // ctx.lineWidth = 1;
+                console.log('aaa');
+                ctx.strokeRect(r.left, r.top, r.right - r.left, r.bottom - r.top);
+            } else if(r.type=='oval') {
+                drawEllipse(ctx, r.left, r.top, r.right - r.left, r.bottom - r.top);
+            } else {
+                drawCircle(ctx, r.left, r.top, r.right - r.left, r.bottom - r.top);
+            }
+
+        }
+    }
+
+    function handleMouseOut(e) {
+        // tell the browser we're handling this event
+        e.preventDefault();
+        e.stopPropagation();
+
+        mouseX = parseInt(e.clientX - offsetX);
+        mouseY = parseInt(e.clientY - offsetY);
+
+        // Put your mouseOut stuff here
+        isDown = false;
+    }
+
+    function handleMouseMove(e) {
+        if (!isDown) { return; }
+        // tell the browser we're handling this event
+        e.preventDefault();
+        e.stopPropagation();
+
+        mouseX = parseInt(e.clientX - offsetX);
+        mouseY = parseInt(e.clientY - offsetY);
+
+        newRect = {
+            left: Math.min(startX, mouseX),
+            right: Math.max(startX, mouseX),
+            top: Math.min(startY, mouseY),
+            bottom: Math.max(startY, mouseY),
+            type: typeDraw,
+        }
+
+        newRect.x = e.pageX - newRect.left;
+        newRect.y = e.pageY - newRect.top;
+        // console.log(x, y, newRect)
+        console.log(newRect)
+
+        drawAll();
+        ctx.strokeStyle = "lightgray";
+        ctx.lineWidth = 3;
+        if (newRect.type == 'vuong') {
+            ctx.strokeRect(startX, startY, mouseX - startX, mouseY - startY);
+        } else if (newRect.type == 'oval') {
+            drawEllipse(ctx, startX, startY, mouseX - startX, mouseY - startY);
+        } else {
+            drawCircle(ctx, startX, startY, mouseX - startX, mouseY - startY);
+        }
+    }
+
+
+    function willOverlap(newRect) {
+
+        // shortcut to the new potential rect
+        var r2 = newRect;
+
+        // test if one rect is completely inside another rect
+        var isInside = function (rect1, rect2) {
+            return (rect2.left >= rect1.left &&
+                rect2.right <= rect1.right &&
+                rect2.top >= rect1.top &&
+                rect2.bottom <= rect1.bottom);
+        }
+
+        // test if the new rect is overlapping any existing rect
+        var isOverlapping = false;
+        for (var i = 0; i < rects.length; i++) {
+            var r1 = rects[i];
+            //
+            var isIntersecting = !(r2.left > r1.right ||
+                r2.right < r1.left ||
+                r2.top > r1.bottom ||
+                r2.bottom < r1.top);
+            //
+            var isContained = isInside(r1, r2) || isInside(r2, r1);
+            //
+            if (isIntersecting || isContained) {
+                isOverlapping = true;
+            }
+        }
+        return (isOverlapping);
+    }
+
+    function drawEllipse(ctx, x, y, w, h) {
+        var kappa = .5522848,
+            ox = (w / 2) * kappa, // control point offset horizontal
+            oy = (h / 2) * kappa, // control point offset vertical
+            xe = x + w,           // x-end
+            ye = y + h,           // y-end
+            xm = x + w / 2,       // x-middle
+            ym = y + h / 2;       // y-middle
+
+        ctx.beginPath();
+        ctx.moveTo(x, ym);
+        ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+        ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+        ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+        ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+        //ctx.closePath(); // not used correctly, see comments (use to close off open path)
+        ctx.stroke();
+    }
+
+    function drawCircle(ctx, x, y, rl, bt){
+        ctx.beginPath();
+        rl = Math.abs(rl)
+        ctx.arc(x, y, rl, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#003300';
+        ctx.stroke();
+    }
+
+
+
+    </script>
+</body>
+
+</html>
