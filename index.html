@@ -4,12 +4,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <title>Paint tools</title>
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/paint.css">
 </head>
 <body class="">
     <div class="wrapper">
         <nav class="main_menu" id="main_menu"></nav>
-        <div class="submenu"></div>
+        <div class="submenu">
+            <a class="logo" href="#">miniPaint</a>
+            <div class="block attributes" id="action_attributes">
+                <div class="item size"><label id="attribute_label_size">Size: </label>
+                    <div class="ui_number_input" id="size">
+                        <input type="number" class="form-control" value="1" aria-labelledby="attribute_label_size" min="1" max="999" step="1">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="sidebar_left" id="tools_container">
             <span id="select" title="Select object tool" class="item trn select"></span>
             <span id="move" title="Move" class="item trn move"></span>
@@ -24,9 +35,10 @@
             <span id="text" title="Text" class="item trn text"></span>
             <span id="history" title="tools12" class="item trn history"></span>
         </div>
+
         <div class="middle_area" id="middle_area">
             <div class="main_wrapper" id="main_wrapper" style="cursor: default;">
-                <div class="canvas_wrapper" id="canvas_wrapper" style="width: 800px; height: 600px;">
+                <div class="canvas_wrapper" id="canvas_wrapper">
                     <div id="mouse"></div>
                     <div class="transparent-grid white" id="canvas_minipaint_background"></div>
                     <canvas id="canvas_minipaint"></canvas>
